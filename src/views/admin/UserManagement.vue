@@ -199,19 +199,3 @@ const handleSizeChange = (size: number) => {
 // 初始加载
 userStore.fetchUsers()
 </script>
-
-<style scoped>
-.management-container {
-    padding: 20px;
-}
-
-.form-tip {
-    font-size: 12px;
-    color: #666;
-    margin-top: 4px;
-
-    &.error {
-        color: #f56c6c;
-    }
-}
-</style>

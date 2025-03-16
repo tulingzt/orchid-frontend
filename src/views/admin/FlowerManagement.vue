@@ -2,7 +2,7 @@
 <template>
     <div class="management-container">
         <el-button type="primary" @click="showDialog('create')">新增花朵</el-button>
-
+        <el-button type="success" @click="exportToExcel">导出Excel</el-button>
         <DataTable :columns="columns" :data="flowerStore.items" :total="flowerStore.pagination.total"
             :page-size="flowerStore.pagination.limit" :loading="flowerStore.loading" :show-actions="true"
             @page-change="handlePageChange" @size-change="handleSizeChange" @edit="showDialog('edit', $event)"
@@ -33,6 +33,8 @@
 </template>
 
 <script setup lang="ts">
+import * as XLSX from 'xlsx';
+import { saveAs } from 'file-saver';
 import { ref, reactive } from 'vue'
 import { useFlowerStore } from '@/stores/flower'
 import DataTable from '@/components/DataTable.vue'
@@ -136,6 +138,41 @@ const handleSizeChange = (size: number) => {
     flowerStore.pagination.limit = size
     flowerStore.fetchItems()
 }
+
+// 导出Excel
+const exportToExcel = () => {
+    // 处理数据格式
+    const data = flowerStore.items.map(item => {
+        const row: Record<string, any> = {};
+        columns.forEach(col => {
+            if (col.prop === 'flower_ratio') {
+                // 计算长宽比并保留两位小数
+                const ratio = item.flower_length / item.flower_width;
+                row[col.label] = Number(ratio.toFixed(2));
+            } else {
+                row[col.label] = item[col.prop as keyof Flower];
+            }
+        });
+        return row;
+    });
+
+    // 创建工作表和工作簿
+    const worksheet = XLSX.utils.json_to_sheet(data);
+    const workbook = XLSX.utils.book_new();
+    XLSX.utils.book_append_sheet(workbook, worksheet, '花朵数据');
+
+    // 生成Excel文件
+    const excelBuffer = XLSX.write(workbook, {
+        bookType: 'xlsx',
+        type: 'array'
+    });
+
+    // 创建Blob并保存文件
+    const blob = new Blob([excelBuffer], {
+        type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+    });
+    saveAs(blob, `花朵数据_${new Date().toISOString().slice(0, 10)}.xlsx`);
+};
 
 // 初始加载
 flowerStore.fetchItems()

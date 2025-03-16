@@ -2,7 +2,7 @@
 <template>
     <div class="management-container">
         <el-button type="primary" @click="showDialog('create')">新增物种</el-button>
-
+        <el-button type="success" @click="exportToExcel">导出Excel</el-button>
         <DataTable :columns="columns" :data="speciesStore.items" :total="speciesStore.pagination.total"
             :page-size="speciesStore.pagination.limit" :loading="speciesStore.loading" :show-actions="true"
             @page-change="handlePageChange" @size-change="handleSizeChange" @edit="showDialog('edit', $event)"
@@ -44,6 +44,8 @@
 </template>
 
 <script setup lang="ts">
+import * as XLSX from 'xlsx'
+import { saveAs } from 'file-saver'
 import { ref, reactive } from 'vue'
 import { useSpeciesStore } from '@/stores/species'
 import DataTable from '@/components/DataTable.vue'
@@ -144,6 +146,49 @@ const handlePageChange = (page: number) => {
 const handleSizeChange = (size: number) => {
     speciesStore.pagination.limit = size
     speciesStore.fetchItems()
+}
+
+const exportToExcel = () => {
+  // 扩展导出列配置（包含分布信息）
+  const exportColumns = [
+    ...columns,
+    { prop: 'distribution', label: '分布信息' }
+  ]
+
+  // 处理数据格式
+  const data = speciesStore.items.map(item => {
+    const row: Record<string, any> = {}
+    exportColumns.forEach(col => {
+      row[col.label] = item[col.prop as keyof Species] || '' // 处理空值情况
+    })
+    return row
+  })
+
+  // 创建工作表
+  const worksheet = XLSX.utils.json_to_sheet(data)
+  
+  // 设置自适应列宽（根据列标题长度）
+  const wscols = exportColumns.map(col => ({
+    wch: Math.max(col.label.length * 2, 12) // 基础宽度为标题长度*2，最小12字符
+  }))
+  worksheet['!cols'] = wscols
+
+  // 创建工作簿
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, '物种数据')
+
+  // 生成文件
+  const excelBuffer = XLSX.write(workbook, {
+    bookType: 'xlsx',
+    type: 'array',
+    cellStyles: true
+  })
+
+  // 保存文件
+  const blob = new Blob([excelBuffer], {
+    type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'
+  })
+  saveAs(blob, `物种数据_${new Date().toISOString().slice(0, 10)}.xlsx`)
 }
 
 // 初始加载

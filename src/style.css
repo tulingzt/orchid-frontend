@@ -1,79 +1,96 @@
-:root {
-  font-family: system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
-
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
+.w-full {
+  width: 100%;
 }
 
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
-}
-a:hover {
-  color: #535bf2;
-}
-
-body {
-  margin: 0;
+.flex {
   display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
 }
 
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+.flex-1 {
+  flex: 1;
 }
 
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
-}
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+.flex-center {
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
-.card {
-  padding: 2em;
+.flex-between {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 
-#app {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+.flex-column {
+  flex-direction: column;
+}
+
+.flex-wrap {
+  flex-wrap: wrap;
+}
+
+.flex-nowrap {
+}
+
+.text-center {
   text-align: center;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+.text-right {
+  text-align: right;
+}
+
+.mb-4 { margin-bottom: 1rem; }
+
+.mt-4 { margin-top: 1rem; }
+
+.mr-2 { margin-right: 0.5rem; }
+/* 认证样式 */
+.auth-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  background: linear-gradient(135deg, #6B8DD6 0%, #8E37D7 100%);
+}
+
+.auth-box {
+  width: 400px;
+  padding: 30px;
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.1);
+  .auth-title {
+    text-align: center;
+    margin-bottom: 30px;
+    color: #303133;
   }
-  a:hover {
-    color: #747bff;
-  }
-  button {
-    background-color: #f9f9f9;
+}
+/* 顶部导航栏样式 */
+.header-container {
+  height: 60px;
+  padding: 0;
+  border-bottom: 1px solid #e6e6e6;
+}
+
+.title-item {
+  cursor: default !important;
+  font-size: 18px;
+  font-weight: 500;
+  color: #303133 !important;
+  opacity: 1 !important;
+}
+/* 主内容区样式 */
+.management-container {
+  padding: 20px;
+}
+
+.form-tip {
+  font-size: 12px;
+  color: #666;
+  margin-top: 4px;
+  &.error {
+      color: #f56c6c;
   }
 }
