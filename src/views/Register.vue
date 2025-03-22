@@ -64,7 +64,7 @@ const form = reactive({
     adminSecret: ''
 })
 
-const validatePassword = (rule: any, value: string, callback: any) => {
+const validatePassword = (_: any, value: string, callback: any) => {
     if (value !== form.password) {
         callback(new Error('两次输入密码不一致'))
     } else {
@@ -72,7 +72,7 @@ const validatePassword = (rule: any, value: string, callback: any) => {
     }
 }
 
-const validateAdminSecret = (rule: any, value: string, callback: any) => {
+const validateAdminSecret = (_: any, value: string, callback: any) => {
     if (form.role === 'admin' && !value) {
         callback(new Error('管理员必须输入密钥'))
     } else {

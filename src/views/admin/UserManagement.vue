@@ -47,7 +47,7 @@ import { ref, reactive, computed } from 'vue'
 import { useUserStore } from '@/stores/user'
 import DataTable from '@/components/DataTable.vue'
 import { ElMessage, ElMessageBox } from 'element-plus'
-import type { User, UserCreate } from '@/types/models'
+import type { User } from '@/types/models'
 
 const userStore = useUserStore()
 const dialogVisible = ref(false)
@@ -93,7 +93,7 @@ const rules = computed(() => ({
         trigger: 'blur'
     }],
     admin_secret: {
-        validator: (rule: any, value: string, callback: any) => {
+        validator: (_: any, value: string, callback: any) => {
             if (formData.role === 'admin' && isCreate.value) {
                 if (!value) {
                     callback(new Error('创建管理员需要提供密钥'));

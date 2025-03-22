@@ -40,7 +40,7 @@ interface TableColumn {
     formatter?: (value: any) => string
 }
 
-const props = defineProps({
+defineProps({
     columns: {
         type: Array as () => TableColumn[],
         required: true

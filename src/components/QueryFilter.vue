@@ -2,7 +2,7 @@
 <template>
     <el-form :model="formData" label-width="120px" class="query-filter" @submit.prevent="$emit('submit', formData)">
         <el-row :gutter="20">
-            <el-col v-for="(item, index) in filterConfig" :xs="24" :sm="item.type === 'range' ? 24 : 12"
+            <el-col v-for="item in filterConfig" :xs="24" :sm="item.type === 'range' ? 24 : 12"
                 :md="item.type === 'range' ? 16 : 8" :lg="item.type === 'range' ? 12 : (item.span || 6)">
                 <el-form-item :label="item.label">
                     <!-- 输入框 -->

@@ -117,7 +117,7 @@ const router = createRouter({
 })
 
 // 路由守卫
-router.beforeEach(async (to, from) => {
+router.beforeEach(async (to, _from) => {
     const authStore = useAuthStore()
     // 处理公开路由
     if (!to.meta.requiresAuth) {
